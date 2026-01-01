@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 KEY_USE_BRIGHTEST_POINT_TRACKER = ord("b")
 KEY_USE_CHARUCO_TRACKER = ord("c")
 KEY_USE_MEDIAPIPE_TRACKER = ord("m")
-
+KEY_USE_MEDIAPIPE_GPU_TRACKER = ord("g")
 KEY_SHOW_CONTROLS = ord("h")
 KEY_SHOW_OVERLAY = ord("o")
 KEY_SHOW_INFO = ord("i")
@@ -182,10 +182,16 @@ class WebcamDemoViewer:
                     from skellytracker.trackers.charuco_tracker import CharucoTracker
                     self.tracker = CharucoTracker.create()
             elif key == KEY_USE_MEDIAPIPE_TRACKER:
-                if "mediapipe" not in self.tracker.__class__.__name__.lower():
+                if "mediapipe_tracker" not in self.tracker.__class__.__name__.lower():
                     logger.info("Switching to MediaPipeTracker")
                     from skellytracker.trackers.mediapipe_tracker import MediapipeTracker
                     self.tracker = MediapipeTracker.create()
+            elif key == KEY_USE_MEDIAPIPE_GPU_TRACKER:
+                print("HIT KEY")
+                if "mediapipe_gpu_tracker" not in self.tracker.__class__.__name__.lower():
+                    logger.info("Switching to MediaPipeGPUTracker")
+                    from skellytracker.trackers.mediapipe_gpu_tracker import MediapipeGPUTracker
+                    self.tracker = MediapipeGPUTracker.create()
             elif key == KEY_SHOW_OVERLAY:
                 show_overlay = not show_overlay
                 if hasattr(self.tracker.config.annotator_config, "show_overlay"):
@@ -235,6 +241,7 @@ class WebcamDemoViewer:
                     f"'{chr(KEY_USE_BRIGHTEST_POINT_TRACKER)})': Use BrightestPointTracker\n"
                     f"'{chr(KEY_USE_CHARUCO_TRACKER)})': Use CharucoTracker\n"
                     f"'{chr(KEY_USE_MEDIAPIPE_TRACKER)})': Use MediaPipeTracker\n"
+                    f"'{chr(KEY_USE_MEDIAPIPE_GPU_TRACKER)})': Use MediaPipeGPUTracker\n"
                     f"'{chr(KEY_SHOW_INFO)}': {'show info' if not show_info else 'hide info'}\n"
                     f"'{chr(KEY_SHOW_OVERLAY)}': show overlay\n"
                     f"'{chr(KEY_SET_AUTO_EXPOSURE)}': auto-exposure\n"

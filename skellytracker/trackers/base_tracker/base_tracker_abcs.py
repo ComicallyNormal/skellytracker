@@ -211,8 +211,9 @@ class BaseTracker(BaseModel, ABC):
                       frame_number: int,
                       image: np.ndarray,
                       record_observation: bool = True) -> BaseObservation:
+        # print("process_image base class entered")
         latest_observation = self.detector.detect(image=image, frame_number=frame_number)
-
+        # print("latest observation")
         if record_observation and self.recorder is not None:
             self.recorder.add_observation(observation=latest_observation)
 
