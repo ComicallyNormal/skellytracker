@@ -94,7 +94,8 @@ class MediapipeGPUObservation(BaseObservation):
 
     @property
     def body_points_xyz(self) -> NDArray[Shape["* body points, 3"], float]:
-        if self.pose_landmarks is None:
+        # logger.info("num of points: " + str(len(self.pose_landmarks.landmark)))
+        if self.pose_landmarks is None or len(self.pose_landmarks.landmark)==0:
             return np.full((self.num_body_points, 3), np.nan)
 
         return self._landmarks_to_array(self.pose_landmarks)
