@@ -60,13 +60,11 @@ class MediapipeGPUObservation(BaseObservation):
                                mediapipe_results: MediapipeResults,
                                image_size: tuple[int, int],
                                include_segmentation_mask: bool = True):
-        # logger.info("entered fpu detection results")
-        # logger.info(len(mediapipe_results.pose_landmarks))
         converted_landmarks = NormalizedLandmarkList()
         if(len(mediapipe_results.pose_landmarks)>0):
             converted_landmarks = cls.to_pb_normalized_landmark_list(mediapipe_results.pose_landmarks[0])
         else:
-            logger.info("found no landmarks")
+            pass
         if include_segmentation_mask:  # TODO: make sure we don't get a missing attribute error
             segmentation_mask = mediapipe_results.segmentation_masks
         else:

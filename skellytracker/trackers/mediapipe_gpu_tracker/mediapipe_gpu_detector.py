@@ -55,15 +55,14 @@ class MediapipeGPUDetector(BaseDetector):
     def create(cls, config: MediapipeGPUDetectorConfig|None=None) -> "MediapipeGPUDetector":
         if config is None:
             config = MediapipeGPUDetectorConfig()
-        logger.info("entered GPU Detector construct")
+        logger.debug("Started GPU Detector Construction")
         base_options = python.BaseOptions(model_asset_path=config.path_to_model,delegate=config.processor_type)
         options = vision.PoseLandmarkerOptions(
         base_options=base_options,
         running_mode=vision.RunningMode.VIDEO,
         output_segmentation_masks=config.enable_segmentation)
-        logger.info("creating detector")
         detector = vision.PoseLandmarker.create_from_options(options)
-        logger.info("Returning from construct")
+        logger.debug("Finished GPU Detector construction")
         return cls(
             config=config,
             detector=detector,
@@ -92,10 +91,8 @@ class MediapipeGPUDetector(BaseDetector):
             pass
             
         else:
-            logger.error("mediapipe seems invalid")
-            print(mediapipe_results !=None)
-            print(mediapipe_results.pose_landmarks != None)
-            print(len(mediapipe_results.pose_landmarks))
+            pass
+
         return MediapipeGPUObservation.from_detection_results(frame_number=frame_number,
                                                           mediapipe_results=mediapipe_results,
                                                           image_size=(int(image.shape[0]), int(image.shape[1])),
